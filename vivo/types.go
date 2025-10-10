@@ -92,9 +92,9 @@ const (
 
 type PushExtra struct {
 	//  回执ID，新回执对应的回执地址id，如果同时设置callback.id和callback，会根据callback.id进行回执
-	CallBackId bool `json:"callback.id"`
+	CallBackId bool `json:"callback.id,omitempty"`
 	//  第三方自定义回执参数，最大长度192个字符
-	CallBackParam string `json:"callback.param"`
+	CallBackParam string `json:"callback.param,omitempty"`
 }
 type TimedDisplay struct {
 	// required 表示应设备离线等原因，消息延迟下发到端侧后，超过定时展示时间范围是否展示。设置为true，表示展示。设置为false，表示不展示。
@@ -123,14 +123,14 @@ type PushMessageReq struct {
 	// 网络方式 -1：不限，1：wifi下发送，不填默认为-1
 	NetworkType int `json:"networkType,omitempty"`
 	// 消息类型 0：运营类消息，1：系统类消息。不填默认为1
-	Classification ClassificationType `json:"classification"`
+	Classification ClassificationType `json:"classification,omitempty"`
 	// 客户端自定义键值对 key和Value键值对总长度不能超过1024字符。app可以按照客户端SDK接入文档获取该键值对
 	ClientCustomMap map[string]string `json:"clientCustomMap,omitempty"`
 	// 高级特性（详见目录：一.公共——4.高级特性 extra）
 	Extra     PushExtra `json:"extra,omitempty"`
 	RequestId string    `json:"requestId"`
 	// 推送模式 0：正式推送；1：测试推送，不填默认为0（测试推送，只能给web界面录入的测试用户推送；审核中应用，只能用测试推送）
-	PushMode PushMode `json:"pushMode"`
+	PushMode PushMode `json:"pushMode,omitempty"`
 	// 二级分类
 	Category PushCategory `json:"category,omitempty"`
 
