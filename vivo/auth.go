@@ -24,7 +24,7 @@ func buildRequest(request *AuthTokenReq) map[string]string {
 	request.Timestamp = strconv.FormatInt(time.Now().UTC().UnixNano()/(1e6), 10)
 
 	return map[string]string{
-		"appId":     request.AppId,
+		"appId":     fmt.Sprintf("%d", request.AppId),
 		"appKey":    request.AppKey,
 		"timestamp": request.Timestamp,
 		"sign":      generateSign(request),
@@ -32,7 +32,7 @@ func buildRequest(request *AuthTokenReq) map[string]string {
 }
 
 func generateSign(request *AuthTokenReq) string {
-	signStr := request.AppId + request.AppKey + request.Timestamp + request.AppSecret
+	signStr := fmt.Sprintf("%d%s%s%s", request.AppId, request.AppKey, request.Timestamp, request.AppSecret)
 	signStr = strings.Trim(signStr, "")
 	return strings.ToLower(utils.MD5([]byte(signStr)))
 }

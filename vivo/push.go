@@ -26,7 +26,7 @@ type authStructDate struct {
 
 var authStructs = authStructDate{}
 
-func Auth(appId string, appKey string, appSecret string) (string, error) {
+func Auth(appId int, appKey string, appSecret string) (string, error) {
 	t := time.Now()
 	var authtoken = buildRequest(&AuthTokenReq{
 		AppId:     appId,
@@ -53,34 +53,22 @@ func Auth(appId string, appKey string, appSecret string) (string, error) {
 	if err := json.Unmarshal(content, &resp); err != nil {
 		return "", err
 	}
-	logger.Debugf("vivo:Auth=>resp:[%s]", res)
+	logger.Debugf("vivo:Auth=>resp:[%s]", content)
 	authStructs.AuthStructs = resp
 	authStructs.Date = t
 	return resp.AuthToken, err
 }
 
-func SendMessage(token string, title string, content string, regId string) error {
-	song := make(map[string]string)
-	song["regId"] = regId
-	song["notifyType"] = "1"
-	song["title"] = title     //"标题"
-	song["content"] = content // "内容"
-	song["timeToLive"] = "86400"
-	song["skipType"] = "1"
-	song["skipContent"] = "1"
-	song["networkType"] = "-1"
-	song["pushMode"] = "0"
-	song["classification"] = "1"
-	song["requestId"] = regId
+func SendSingleMessage(accessToken string, req *PushSingleMessageReq) error {
 	headers := make(map[string]string)
 	headers["Content-Type"] = "application/json;charset=utf-8"
-	headers["authToken"] = token
-	bytesData, _ := json.Marshal(song)
+	headers["authToken"] = accessToken
+	bytesData, _ := json.Marshal(req)
 	res, err := httpPost(URL+"/message/send", bytesData, headers)
 	if err != nil {
 		return err
 	}
-	logger.Debugf("vivo:MessageSend=>token:[%s] resp:[%s]", token, res)
+	logger.Debugf("vivo:MessageSend=>accessToken:[%s] resp:[%s]", accessToken, res)
 	return nil
 }
 
