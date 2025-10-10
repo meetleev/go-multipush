@@ -127,8 +127,8 @@ type PushMessageReq struct {
 	// 客户端自定义键值对 key和Value键值对总长度不能超过1024字符。app可以按照客户端SDK接入文档获取该键值对
 	ClientCustomMap map[string]string `json:"clientCustomMap,omitempty"`
 	// 高级特性（详见目录：一.公共——4.高级特性 extra）
-	Extra     PushExtra `json:"extra,omitempty"`
-	RequestId string    `json:"requestId"`
+	Extra     *PushExtra `json:"extra,omitempty"`
+	RequestId string     `json:"requestId"`
 	// 推送模式 0：正式推送；1：测试推送，不填默认为0（测试推送，只能给web界面录入的测试用户推送；审核中应用，只能用测试推送）
 	PushMode PushMode `json:"pushMode,omitempty"`
 	// 二级分类
@@ -137,8 +137,8 @@ type PushMessageReq struct {
 	// 是否在线直推，设置为true表示是在线直推，false表示非直推。在线直推功能推送时在设备在线下发一次，设备离线直接丢弃。
 	SendOnline bool `json:"sendOnline"`
 	// 是否前台通知展示，设置为false表示应用在前台则不展示通知消息，true表示无论应用是否在前台都展示通知。不填默认为true
-	ForegroundShow bool         `json:"foregroundShow,omitempty"`
-	TimedDisplay   TimedDisplay `json:"timedDisplay,omitempty"`
+	ForegroundShow bool          `json:"foregroundShow,omitempty"`
+	TimedDisplay   *TimedDisplay `json:"timedDisplay,omitempty"`
 }
 
 func NewPushMessageReq() *PushMessageReq {
