@@ -105,7 +105,7 @@ type TimedDisplay struct {
 	ShowEndTime string `json:"showEndTime"`
 }
 
-type PushMessageReq struct {
+type PushMessage struct {
 	// required 用户申请推送业务时生成的appId，用于与获取authToken时传递的appId校验，一致才可以推送
 	AppId int `json:"appId"`
 	// required
@@ -141,8 +141,8 @@ type PushMessageReq struct {
 	TimedDisplay   *TimedDisplay `json:"timedDisplay,omitempty"`
 }
 
-func NewPushMessageReq() *PushMessageReq {
-	return &PushMessageReq{
+func NewPushMessage() *PushMessage {
+	return &PushMessage{
 		NotifyType:     PushNotifyTypeNone,
 		TimeToLive:     86400,
 		SkipType:       PushSkipTypeOpenFirstPage,
@@ -154,16 +154,16 @@ func NewPushMessageReq() *PushMessageReq {
 }
 
 type PushSingleMessageReq struct {
-	PushMessageReq
+	*PushMessage
 	// required 应用订阅vivo推送服务器得到的id
-	RegId string `json:"regId"`
+	DeviceToken string `json:"regId"`
 	// 关联终端设备登录用户标识，最大长度为64
 	ProfileId string `json:"profileId,omitempty"`
 }
 
 func NewPushSingleMessageReq() *PushSingleMessageReq {
 	return &PushSingleMessageReq{
-		PushMessageReq: *NewPushMessageReq(),
+		PushMessage: NewPushMessage(),
 	}
 }
 
@@ -189,7 +189,9 @@ type PushMessageResp struct {
 	// 任务ID
 	TaskId string `json:"taskId"` // 任务ID
 }
-type SaveMessageToCloudReq = PushMessageReq
+type SaveMessageToCloudReq struct {
+	PushMessage
+}
 
 type SaveMessageToCloudResp struct {
 	// 接口调用是否成功的状态码 0成功，非0失败

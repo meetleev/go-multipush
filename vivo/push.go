@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/meetleev/go-multipush/utils"
+
 	logger "github.com/sirupsen/logrus"
 )
 
@@ -64,32 +66,10 @@ func SendSingleMessage(accessToken string, req *PushSingleMessageReq) error {
 	headers["Content-Type"] = "application/json;charset=utf-8"
 	headers["authToken"] = accessToken
 	bytesData, _ := json.Marshal(req)
-	res, err := httpPost(URL+"/message/send", bytesData, headers)
+	res, err := utils.HttpPost(URL+"/message/send", bytesData, headers)
 	if err != nil {
 		return err
 	}
-	logger.Debugf("vivo:MessageSend=>accessToken:[%s] resp:[%s]", accessToken, res)
+	logger.Debugf("vivo:MessageSend=>accessToken:[%s] resp:[%s]", accessToken, string(res))
 	return nil
-}
-
-func httpPost(url string, msg []byte, headers map[string]string) (string, error) {
-	client := &http.Client{}
-
-	req, err := http.NewRequest("POST", url, bytes.NewReader(msg))
-	if err != nil {
-		return "", err
-	}
-	for key, header := range headers {
-		req.Header.Set(key, header)
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		return "", err
-	}
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-	return string(body), nil
 }

@@ -36,8 +36,3 @@ func generateSign(request *AuthTokenReq) string {
 	signStr = strings.Trim(signStr, "")
 	return strings.ToLower(utils.MD5([]byte(signStr)))
 }
-
-func getUri() string {
-
-	return fmt.Sprintf("%s/%s", urlBase, actionAuth)
-}
