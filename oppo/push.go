@@ -42,11 +42,11 @@ func getHost() string {
 }
 
 // auth_token
-func Auth(app_key string, masterSecret string) (string, error) {
+func Auth(appPushKey string, masterSecret string) (string, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/(1e6), 10)
 	params := url.Values{}
-	signStr := app_key + timestamp + masterSecret
-	params.Set("app_key", app_key)
+	signStr := appPushKey + timestamp + masterSecret
+	params.Set("app_key", appPushKey)
 	params.Set("sign", utils.SHA256([]byte(signStr)))
 	params.Set("timestamp", timestamp)
 	headers := make(map[string]string)
