@@ -95,7 +95,7 @@ type PushMessage struct {
 }
 
 type PushMessageReq struct {
-	*PushMessage
+	PushMessage
 	// 根据registration_id，发送消息到指定设备上。可以提供多个registration_id，发送给一组设备，不同的registration_id之间用“,”分割。参数仅适用于“/message/regid”HTTP API
 	RegistrationId string `json:"registration_id,omitempty"`
 	// 根据alias，发送消息到指定的设备。可以提供多个alias，发送给一组设备，不同的alias之间用“,”分割。参数仅适用于“/message/alias”HTTP API。

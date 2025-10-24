@@ -22,7 +22,7 @@ type MiPush struct {
 }
 
 // 推送消息给指定的一些 regid
-func (miPush *MiPush) SendMultAlias(message *PushMessage, regIDs []string) (*PushMessageResp, error) {
+func (miPush *MiPush) SendMultAlias(message PushMessage, regIDs []string) (*PushMessageResp, error) {
 	req := PushMessageReq{
 		PushMessage: message,
 		Alias:       strings.Join(regIDs, ","),
@@ -31,7 +31,7 @@ func (miPush *MiPush) SendMultAlias(message *PushMessage, regIDs []string) (*Pus
 }
 
 // 推送消息给指定的一些 regid
-func (miPush *MiPush) SendMultRegId(message *PushMessage, regIDs []string) (*PushMessageResp, error) {
+func (miPush *MiPush) SendMultRegId(message PushMessage, regIDs []string) (*PushMessageResp, error) {
 	req := PushMessageReq{
 		PushMessage:    message,
 		RegistrationId: strings.Join(regIDs, ","),
@@ -82,6 +82,9 @@ func (miPush *MiPush) SendRegID(req *PushMessageReq) (*PushMessageResp, error) {
 		logger.Errorf("httpPost(%v, %v, %v) error(%v)", uri, string(bytesData), headers, err)
 		return nil, err
 	}
+
+	logger.Debugf(" SendRegID(%s)", string(bytesData))
+
 	res := PushMessageResp{}
 	if err := json.Unmarshal(jsonData, &res); err != nil {
 		logger.Errorf("json.Unmarshal(%s,&res) error(%v)", jsonData, err)
