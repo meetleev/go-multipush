@@ -91,7 +91,7 @@ type PushMessage struct {
 	// 可选项。默认情况下，通知栏只显示一条推送消息。如果通知栏要显示多条推送消息，需要针对不同的消息设置不同的notify_id（相同notify_id的通知栏消息会覆盖之前的），且要求notify_id为取值在0~2147483647的整数
 	NotifyId uint `json:"notify_id,omitempty"`
 
-	Extra PushMessageExera `json:"extra,omitempty"`
+	Extra any `json:"extra,omitempty"`
 }
 
 type PushMessageReq struct {
