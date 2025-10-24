@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"io"
 	"net/http"
-	"net/url"
-	"reflect"
 )
 
 func HttpPost(url string, msg []byte, headers map[string]string) ([]byte, error) {
@@ -28,23 +26,4 @@ func HttpPost(url string, msg []byte, headers map[string]string) ([]byte, error)
 	}
 	defer resp.Body.Close()
 	return body, nil
-}
-
-func StructToValues(v interface{}) url.Values {
-	values := url.Values{}
-	rv := reflect.ValueOf(v)
-	rt := rv.Type()
-
-	for i := 0; i < rt.NumField(); i++ {
-		field := rt.Field(i)
-		key := field.Tag.Get("json")
-		if key == "" {
-			key = field.Name
-		}
-
-		value := rv.Field(i).Interface()
-		values.Set(key, value.(string))
-	}
-
-	return values
 }

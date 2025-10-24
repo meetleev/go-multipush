@@ -23,26 +23,19 @@ type MiPush struct {
 
 // 推送消息给指定的一些 regid
 func (miPush *MiPush) SendMultAlias(message PushMessage, regIDs []string) (*PushMessageResp, error) {
-	req := PushMessageReq{
-		PushMessage: message,
-		Alias:       strings.Join(regIDs, ","),
-	}
-	return miPush.SendAlias(&req)
+	req := NewPushMessageReq(&message).Alias(strings.Join(regIDs, ","))
+	return miPush.SendAlias(*req)
 }
 
 // 推送消息给指定的一些 regid
 func (miPush *MiPush) SendMultRegId(message PushMessage, regIDs []string) (*PushMessageResp, error) {
-	req := PushMessageReq{
-		PushMessage:    message,
-		RegistrationId: strings.Join(regIDs, ","),
-	}
-	return miPush.SendRegID(&req)
+	req := NewPushMessageReq(&message).RegistrationId(strings.Join(regIDs, ","))
+	return miPush.SendRegID(*req)
 }
 
 // message/alias
-func (miPush *MiPush) SendAlias(req *PushMessageReq) (*PushMessageResp, error) {
-	form := utils.StructToValues(req)
-	formParams := form.Encode()
+func (miPush *MiPush) SendAlias(req PushMessageReq) (*PushMessageResp, error) {
+	formParams := req.Encode()
 	uri := defaultURI + "/message/alias"
 	headers := make(map[string]string)
 	headers["Authorization"] = "key=" + miPush.AppSecret
@@ -69,12 +62,9 @@ func (miPush *MiPush) SendAlias(req *PushMessageReq) (*PushMessageResp, error) {
 	return &res, nil
 }
 
-//	params.Set("channel_id", "101351")
-//
 // 推送消息给指定的regid
-func (miPush *MiPush) SendRegID(req *PushMessageReq) (*PushMessageResp, error) {
-	form := utils.StructToValues(req)
-	formParams := form.Encode()
+func (miPush *MiPush) SendRegID(req PushMessageReq) (*PushMessageResp, error) {
+	formParams := req.Encode()
 	uri := defaultURI + "/message/regid"
 	headers := make(map[string]string)
 	headers["Authorization"] = "key=" + miPush.AppSecret
