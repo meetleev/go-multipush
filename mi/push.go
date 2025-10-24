@@ -41,14 +41,15 @@ func (miPush *MiPush) SendMultRegId(message PushMessage, regIDs []string) (*Push
 
 // message/alias
 func (miPush *MiPush) SendAlias(req *PushMessageReq) (*PushMessageResp, error) {
-	bytesData, _ := json.Marshal(req)
+	form := utils.StructToValues(req)
+	formParams := form.Encode()
 	uri := defaultURI + "/message/alias"
 	headers := make(map[string]string)
 	headers["Authorization"] = "key=" + miPush.AppSecret
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	jsonData, err := utils.HttpPost(uri, bytesData, headers)
+	jsonData, err := utils.HttpPost(uri, []byte(formParams), headers)
 	if err != nil {
-		logger.Errorf("httpPost(%v, %v, %v) error(%v)", uri, string(bytesData), headers, err)
+		logger.Errorf("httpPost(%v, %v, %v) error(%v)", uri, formParams, headers, err)
 		return nil, err
 	}
 	res := PushMessageResp{}
@@ -72,18 +73,19 @@ func (miPush *MiPush) SendAlias(req *PushMessageReq) (*PushMessageResp, error) {
 //
 // 推送消息给指定的regid
 func (miPush *MiPush) SendRegID(req *PushMessageReq) (*PushMessageResp, error) {
-	bytesData, _ := json.Marshal(req)
+	form := utils.StructToValues(req)
+	formParams := form.Encode()
 	uri := defaultURI + "/message/regid"
 	headers := make(map[string]string)
 	headers["Authorization"] = "key=" + miPush.AppSecret
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	jsonData, err := utils.HttpPost(uri, bytesData, headers)
+	jsonData, err := utils.HttpPost(uri, []byte(formParams), headers)
 	if err != nil {
-		logger.Errorf("httpPost(%v, %v, %v) error(%v)", uri, string(bytesData), headers, err)
+		logger.Errorf("httpPost(%v, %v, %v) error(%v)", uri, string(formParams), headers, err)
 		return nil, err
 	}
 
-	logger.Debugf(" SendRegID(%s)", string(bytesData))
+	logger.Debugf(" SendRegID(%s)", formParams)
 
 	res := PushMessageResp{}
 	if err := json.Unmarshal(jsonData, &res); err != nil {
