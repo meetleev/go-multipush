@@ -9,6 +9,7 @@ import (
 	"github.com/meetleev/go-multipush/utils"
 )
 
+// [xiao mi doc](https://dev.mi.com/xiaomihyperos/documentation/detail?pId=1559)
 var (
 	v2URI      string = "https://api.xmpush.xiaomi.com/v2"
 	v3URI      string = "https://api.xmpush.xiaomi.com/v3"
