@@ -33,19 +33,23 @@ type AuthResp struct {
 }
 
 type HonorPushClient struct {
-	ClientId     string
-	ClientSecret string
-	AppId        string
+	clientId     string
+	clientSecret string
+	appId        string
 
 	tokenData *AuthResp
+}
+
+func NewPushClient(clientId, clientSecret, appId string) *HonorPushClient {
+	return &HonorPushClient{clientId: clientId, clientSecret: clientSecret, appId: appId}
 }
 
 // auth_token
 func (c *HonorPushClient) Auth() (*AuthResp, error) {
 	params := url.Values{}
 	params.Set("grant_type", "client_credentials")
-	params.Set("client_id", c.ClientId)
-	params.Set("client_secret", c.ClientSecret)
+	params.Set("client_id", c.clientId)
+	params.Set("client_secret", c.clientSecret)
 	headers := make(map[string]string)
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
 	jsonData, err := utils.HttpPost(fmt.Sprintf("%s/auth/token", BASE_URL), []byte(params.Encode()), headers)
@@ -79,7 +83,7 @@ func (c *HonorPushClient) SendMessage(msg *PushMessage) (*PushMessageResp, error
 	headers["Authorization"] = fmt.Sprintf("Bearer %s", c.tokenData.AccessToken)
 	headers["timestamp"] = fmt.Sprintf("%d", now)
 	headers["Content-Type"] = "application/json"
-	jsonData, err := utils.HttpPost(fmt.Sprintf("%s/api/v1/%s/sendMessage", BASE_URL, c.AppId), bytesData, headers)
+	jsonData, err := utils.HttpPost(fmt.Sprintf("%s/api/v1/%s/sendMessage", BASE_URL, c.appId), bytesData, headers)
 	if err != nil {
 		return nil, err
 	}
