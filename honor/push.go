@@ -64,7 +64,7 @@ func (c *HonorPushClient) Auth() (*AuthResp, error) {
 	return &res, nil
 }
 
-func (c *HonorPushClient) SendMessage(msg *PushMessage) (*PushMessageResp, error) {
+func (c *HonorPushClient) SendMessage(msg PushMessage) (*PushMessageResp, error) {
 	now := time.Now().UnixMilli()
 	if nil == c.tokenData {
 		tokenData, err := c.Auth()
