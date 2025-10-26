@@ -138,7 +138,7 @@ type AlertPayload struct {
 
 type PushPayload struct{}
 type PushTarget struct {
-	Token []string `joson:"token"`
+	Token []string `json:"token"`
 }
 type PushOptions struct {
 
