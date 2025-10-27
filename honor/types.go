@@ -51,15 +51,6 @@ const (
 )
 
 // https://developer.honor.com/cn/docs/11002/reference/downlink-message#%E8%8E%B7%E5%8F%96%E9%89%B4%E6%9D%83%E6%8E%A5%E5%8F%A3
-type PushNotification struct {
-	// 通知栏消息的标题。发送通知栏消息时，此处title和android.notification .title两者最少需要设置一个。
-	Title string `json:"title"`
-	// 通知栏消息的内容。发送通知栏消息时，此处body和android.notification .body两者最少需要设置一个。
-	Body string `json:"body"`
-	// 用户自定义的通知栏消息通知小图URL，该字段仅允许在服务通讯类消息中使用；如果不设置，则不展示通知小图。URL使用的协议必须是HTTPS协议
-	ImageUrl string `json:"image,omitempty"`
-}
-
 type PushAndroidButton struct {
 	// 按钮名称，最大长度40。
 	Name string `json:"name"`
@@ -113,9 +104,9 @@ type PushAndroidNotification struct {
 	ClickAction *PushAndroidClickAction `json:"clickAction"`
 
 	// Android通知栏消息大文本标题，当style为1时必选，设置bigTitle后通知栏展示时，bigTitle设置后内容要与title一致
-	BigTitle string `json:"bigTitle"`
+	BigTitle string `json:"bigTitle,omitempty"`
 	// Android通知栏消息大文本内容，当style为1时必选，设置bigBody后通知栏展示时，bigBody设置后内容要与body一致
-	BigBody string `json:"bigBody"`
+	BigBody string `json:"bigBody,omitempty"`
 
 	// 设置通知栏消息的到达时间，如果您同时发送多条消息，Android通知栏中的消息根据这个值进行排序，同时将排序后的消息在通知栏上显示。该时间戳为UTC时间戳，样例：2014-10-02T15:01:23.045123456Z。
 	When int64 `json:"when,omitempty"`
@@ -131,7 +122,7 @@ type PushAndroidNotification struct {
 	Category PushCategory `json:"importance,omitempty"`
 }
 
-type PushAndroidOptions struct {
+type PushAndroidConfig struct {
 	/*
 	* 消息缓存时间，单位是秒。在用户设备离线时，消息在Push服务器进行缓存，
 	* 在消息缓存时间内用户设备上线，消息会下发，超过缓存时间后消息会丢弃，默认值为“86400s”（1天），最大值为“1296000s”（15天）。
@@ -146,13 +137,11 @@ type PushAndroidOptions struct {
 }
 
 type PushMessage struct {
-	// 通知栏消息内容
-	Notification *PushNotification `json:"notification,omitempty"`
 	// 	自定义消息负载，通知栏消息支持JSON格式字符串，透传消息支持普通字符串或者JSON格式字符串
 	Payload string   `json:"data,omitempty"`
 	Token   []string `json:"token"`
 	// 	Android消息推送控制参数
-	AndroidOptions *PushAndroidOptions `json:"android,omitempty"`
+	AndroidConfig *PushAndroidConfig `json:"android,omitempty"`
 }
 
 type PushMessageResp struct {
