@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	BASE_URL = "https://iam.developer.honor.com"
+	BASE_URL      = "https://iam.developer.honor.com"
+	BASE_PUSH_URL = "https://push-api.cloud.honor.com"
 )
 
 type HttpError struct {
@@ -83,7 +84,7 @@ func (c *HonorPushClient) SendMessage(msg PushMessage) (*PushMessageResp, error)
 	headers["Authorization"] = fmt.Sprintf("Bearer %s", c.tokenData.AccessToken)
 	headers["timestamp"] = fmt.Sprintf("%d", now)
 	headers["Content-Type"] = "application/json"
-	jsonData, err := utils.HttpPost(fmt.Sprintf("%s/api/v1/%s/sendMessage", BASE_URL, c.appId), bytesData, headers)
+	jsonData, err := utils.HttpPost(fmt.Sprintf("%s/api/v1/%s/sendMessage", BASE_PUSH_URL, c.appId), bytesData, headers)
 	if err != nil {
 		return nil, err
 	}
