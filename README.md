@@ -12,3 +12,5 @@ A Go SDK for mobile push notifications, supporting multiple vendors including Vi
 * [huawei](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/push-scenariozed-api-intro)
 
 * [honor](https://developer.honor.com/cn/docs/11002/reference/downlink-message#%E8%8E%B7%E5%8F%96%E9%89%B4%E6%9D%83%E6%8E%A5%E5%8F%A3)
+
+* [apple](https://github.com/sideshow/apns2)

@@ -168,8 +168,8 @@ func NewPushMessage() *PushMessage {
 }
 
 type PushSingleMessageReq struct {
-	*PushMessage
-	TargetType int16 `json:"target_type"`
+	Notification *PushMessage `json:"notification"`
+	TargetType   int16        `json:"target_type"`
 	// required registration_id or 别名
 	TargetValue string `json:"target_value"`
 	/*
@@ -179,10 +179,21 @@ type PushSingleMessageReq struct {
 	VerifyRegistrationId bool `json:"verify_registration_id,omitempty"`
 }
 
-func NewPushSingleMessageReqWithToken(token string) *PushSingleMessageReq {
+func NewPushSingleMessageReqWithToken(token string, notification PushMessage) *PushSingleMessageReq {
 	return &PushSingleMessageReq{
 		TargetType:           2,
-		PushMessage:          NewPushMessage(),
+		Notification:         &notification,
 		TargetValue:          token,
 		VerifyRegistrationId: false}
+}
+
+type PushMessageResp struct {
+	// 响应码
+	Code int `json:"code"`
+	// 响应信息
+	Message string `json:"message,omitempty"`
+	Data    struct {
+		// 推送消息的结果
+		MessageId bool `json:"messageId"`
+	} `json:"data,omitempty"`
 }
