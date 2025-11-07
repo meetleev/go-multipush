@@ -194,6 +194,6 @@ type PushMessageResp struct {
 	Message string `json:"message,omitempty"`
 	Data    struct {
 		// 推送消息的结果
-		MessageId bool `json:"messageId"`
+		MessageId string `json:"messageId"`
 	} `json:"data,omitempty"`
 }
